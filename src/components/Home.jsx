@@ -1,7 +1,5 @@
 function Home({ setView }) {
-    
   return (
-
     <div>
       <h1>Menú principal</h1>
 
@@ -12,8 +10,11 @@ function Home({ setView }) {
       <button onClick={() => setView("calculator")}>
         Ir a Calculadora
       </button>
+
+      <button onClick={() => setView("pokemon")}>
+        Ver Pokémon
+      </button>
     </div>
-    
   );
 }
 
