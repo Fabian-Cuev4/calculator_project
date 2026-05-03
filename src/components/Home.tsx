@@ -1,4 +1,8 @@
-function Home({ setView }) {
+type Props = {
+  setView: (view: string) => void;
+};
+
+function Home({ setView }: Props) {
   return (
     <div>
       <h1>Menú principal</h1>

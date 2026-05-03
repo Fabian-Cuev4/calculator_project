@@ -1,10 +1,14 @@
 import { useState } from "react";
 
-function Sum({ setView }) {
-  const [num1, setNum1] = useState("");
-  const [num2, setNum2] = useState("");
+type Props = {
+  setView: (view: string) => void;
+};
 
-  const sum = () => {
+function Sum({ setView }: Props) {
+  const [num1, setNum1] = useState<string>("");
+  const [num2, setNum2] = useState<string>("");
+
+  const sum = (): void => {
     const resultado = Number(num1) + Number(num2);
     alert("Resultado: " + resultado);
   };
@@ -16,13 +20,17 @@ function Sum({ setView }) {
       <input
         type="number"
         value={num1}
-        onChange={(e) => setNum1(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setNum1(e.target.value)
+        }
       />
 
       <input
         type="number"
         value={num2}
-        onChange={(e) => setNum2(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setNum2(e.target.value)
+        }
       />
 
       <button onClick={sum}>Sumar</button>

@@ -1,15 +1,19 @@
 import { useState } from "react";
 
-function Calculator({ setView }) {
-  const [display, setDisplay] = useState("");
-  const [valorAnterior, setValorAnterior] = useState(null);
-  const [operacion, setOperacion] = useState(null);
+type Props = {
+  setView: (view: string) => void;
+};
 
-  const agregarNumero = (num) => {
+function Calculator({ setView }: Props) {
+  const [display, setDisplay] = useState<string>("");
+  const [valorAnterior, setValorAnterior] = useState<number | null>(null);
+  const [operacion, setOperacion] = useState<string | null>(null);
+
+  const agregarNumero = (num: string): void => {
     setDisplay(display + num);
   };
 
-  const elegirOperacion = (op) => {
+  const elegirOperacion = (op: string): void => {
     if (display === "") return;
 
     setValorAnterior(Number(display));
@@ -17,23 +21,24 @@ function Calculator({ setView }) {
     setDisplay("");
   };
 
-  const calcular = () => {
-    if (valorAnterior === null || display === "") return;
+  const calcular = (): void => {
+    if (valorAnterior === null || display === "" || operacion === null) return;
 
     const actual = Number(display);
-    let resultado;
+    let resultado: number;
 
     if (operacion === "+") resultado = valorAnterior + actual;
-    if (operacion === "-") resultado = valorAnterior - actual;
-    if (operacion === "*") resultado = valorAnterior * actual;
-    if (operacion === "/") resultado = valorAnterior / actual;
+    else if (operacion === "-") resultado = valorAnterior - actual;
+    else if (operacion === "*") resultado = valorAnterior * actual;
+    else if (operacion === "/") resultado = valorAnterior / actual;
+    else return;
 
     setDisplay(String(resultado));
     setValorAnterior(null);
     setOperacion(null);
   };
 
-  const limpiar = () => {
+  const limpiar = (): void => {
     setDisplay("");
     setValorAnterior(null);
     setOperacion(null);
@@ -47,18 +52,24 @@ function Calculator({ setView }) {
         <input value={display} readOnly />
 
         <div style={gridStyle}>
-          {[7,8,9].map(n => (
-            <button key={n} onClick={() => agregarNumero(n.toString())}>{n}</button>
+          {[7, 8, 9].map((n) => (
+            <button key={n} onClick={() => agregarNumero(n.toString())}>
+              {n}
+            </button>
           ))}
           <button onClick={() => elegirOperacion("/")}>/</button>
 
-          {[4,5,6].map(n => (
-            <button key={n} onClick={() => agregarNumero(n.toString())}>{n}</button>
+          {[4, 5, 6].map((n) => (
+            <button key={n} onClick={() => agregarNumero(n.toString())}>
+              {n}
+            </button>
           ))}
           <button onClick={() => elegirOperacion("*")}>*</button>
 
-          {[1,2,3].map(n => (
-            <button key={n} onClick={() => agregarNumero(n.toString())}>{n}</button>
+          {[1, 2, 3].map((n) => (
+            <button key={n} onClick={() => agregarNumero(n.toString())}>
+              {n}
+            </button>
           ))}
           <button onClick={() => elegirOperacion("-")}>-</button>
 
@@ -74,13 +85,11 @@ function Calculator({ setView }) {
   );
 }
 
-const gridStyle = {
+const gridStyle: React.CSSProperties = {
   display: "grid",
   gridTemplateColumns: "repeat(4, 60px)",
   gap: "5px",
-  marginTop: "10px"
+  marginTop: "10px",
 };
-
-
 
 export default Calculator;

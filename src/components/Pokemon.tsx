@@ -1,24 +1,47 @@
 import { useEffect, useState } from "react";
 
-function Pokemon({ setView }) {
-  // Local state for list data, search input, and selected/detail views.
-  const [pokemons, setPokemons] = useState([]);
-  const [search, setSearch] = useState("");
-  const [selectedPokemon, setSelectedPokemon] = useState(null);
-  const [detailPokemon, setDetailPokemon] = useState(null);
+type Props = {
+  setView: (view: string) => void;
+};
 
-  // Fetch initial Pokemon list once when the component mounts.
+// Tipos mínimos necesarios (solo lo que usas)
+type PokemonType = {
+  id: number;
+  name: string;
+  height: number;
+  weight: number;
+  base_experience: number;
+  sprites: {
+    front_default: string;
+  };
+  types: {
+    type: {
+      name: string;
+    };
+  }[];
+  abilities: {
+    ability: {
+      name: string;
+    };
+  }[];
+};
+
+function Pokemon({ setView }: Props) {
+  const [pokemons, setPokemons] = useState<PokemonType[]>([]);
+  const [search, setSearch] = useState<string>("");
+  const [selectedPokemon, setSelectedPokemon] = useState<PokemonType | null>(null);
+  const [detailPokemon, setDetailPokemon] = useState<PokemonType | null>(null);
+
   useEffect(() => {
     getPokemons();
   }, []);
 
-  // Load a limited list and then fetch full details for each Pokemon.
-  const getPokemons = async () => {
+  const getPokemons = async (): Promise<void> => {
     const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=8");
     const data = await response.json();
 
-    const pokemonDetails = await Promise.all(
-      data.results.map(async (pokemon) => {
+    const pokemonDetails: PokemonType[] = await Promise.all(
+      data.results.map(async (pokemon: { url: string }) => {
         const detailResponse = await fetch(pokemon.url);
         return await detailResponse.json();
       })
@@ -27,32 +50,27 @@ function Pokemon({ setView }) {
     setPokemons(pokemonDetails);
   };
 
-  // Client-side filter by Pokemon name.
   const filteredPokemons = pokemons.filter((pokemon) =>
     pokemon.name.toLowerCase().includes(search.toLowerCase())
   );
 
-  // Open/close the quick-view modal card.
-  const openModal = (pokemon) => {
+  const openModal = (pokemon: PokemonType): void => {
     setSelectedPokemon(pokemon);
   };
 
-  const closeModal = () => {
+  const closeModal = (): void => {
     setSelectedPokemon(null);
   };
 
-  // Switch from modal preview to full detail page.
-  const openDetailPage = (pokemon) => {
+  const openDetailPage = (pokemon: PokemonType): void => {
     setSelectedPokemon(null);
     setDetailPokemon(pokemon);
   };
 
-  // Return from detail page to the list grid.
-  const backToPokemonList = () => {
+  const backToPokemonList = (): void => {
     setDetailPokemon(null);
   };
 
-  // Dedicated detail-page render branch.
   if (detailPokemon) {
     return (
       <div className="pokemon-page">
@@ -70,16 +88,12 @@ function Pokemon({ setView }) {
 
         <p>
           Tipo:{" "}
-          {detailPokemon.types
-            .map((item) => item.type.name)
-            .join(", ")}
+          {detailPokemon.types.map((item) => item.type.name).join(", ")}
         </p>
 
         <p>
           Habilidades:{" "}
-          {detailPokemon.abilities
-            .map((item) => item.ability.name)
-            .join(", ")}
+          {detailPokemon.abilities.map((item) => item.ability.name).join(", ")}
         </p>
 
         <button onClick={backToPokemonList}>
@@ -93,7 +107,6 @@ function Pokemon({ setView }) {
     );
   }
 
-  // Main list view with search, cards, and modal.
   return (
     <div className="pokemon-page">
       <h1>Pokémon API</h1>
@@ -103,11 +116,12 @@ function Pokemon({ setView }) {
         type="text"
         placeholder="Buscar Pokémon..."
         value={search}
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setSearch(e.target.value)
+        }
       />
 
       <div className="pokemon-grid">
-        {/* Pokemon card grid rendered from filtered results. */}
         {filteredPokemons.map((pokemon) => (
           <div
             className="pokemon-card"
@@ -130,7 +144,6 @@ function Pokemon({ setView }) {
       </button>
 
       {selectedPokemon && (
-        // Modal shown when a Pokemon is selected from the grid.
         <div className="modal-background">
           <div className="modal-content">
             <button className="modal-close" onClick={closeModal}>
