@@ -14,7 +14,7 @@ type PokemonDetailProps = {
 function PokemonDetail({ pokemon, onBackToList, onGoHome }: PokemonDetailProps) {
   return (
     <Paper elevation={3} sx={{ p: 4, maxWidth: 640, mx: "auto", my: 6 }}>
-      <Stack spacing={2} alignItems="center">
+      <Stack spacing={2} sx={{ alignItems: "center" }}>
         <Typography variant="h4" component="h1" sx={{ textTransform: "capitalize" }}>
           {pokemon.name}
         </Typography>

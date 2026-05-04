@@ -51,7 +51,7 @@ function Calculator({ setView }: Props) {
 
   return (
     <Paper elevation={3} sx={{ p: 4, maxWidth: 420, mx: "auto", my: 6 }}>
-      <Stack spacing={2} alignItems="center">
+      <Stack spacing={2} sx={{ alignItems: "center" }}>
         <Typography variant="h5" component="h2">
           Calculadora
         </Typography>

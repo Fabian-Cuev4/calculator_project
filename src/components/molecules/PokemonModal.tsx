@@ -19,7 +19,7 @@ function PokemonModal({ pokemon, onClose, onSeeDetails }: PokemonModalProps) {
     <Dialog open onClose={onClose} fullWidth maxWidth="xs">
       <DialogTitle sx={{ textTransform: "capitalize" }}>{pokemon.name}</DialogTitle>
       <DialogContent>
-        <Stack spacing={2} alignItems="center" sx={{ pt: 1 }}>
+        <Stack spacing={2} sx={{ pt: 1, alignItems: "center" }}>
           <img src={pokemon.sprites.front_default} alt={pokemon.name} width={140} />
           <Typography variant="body2">Altura: {pokemon.height}</Typography>
           <Typography variant="body2">Peso: {pokemon.weight}</Typography>
