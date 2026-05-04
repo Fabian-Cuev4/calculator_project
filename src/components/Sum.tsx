@@ -1,45 +1,12 @@
-import { useState } from "react";
+import SumForm from "./molecules/SumForm.js";
+import type { View } from "../types/view.js";
 
 type Props = {
-  setView: (view: string) => void;
+  setView: (view: View) => void;
 };
 
 function Sum({ setView }: Props) {
-  const [num1, setNum1] = useState<string>("");
-  const [num2, setNum2] = useState<string>("");
-
-  const sum = (): void => {
-    const resultado = Number(num1) + Number(num2);
-    alert("Resultado: " + resultado);
-  };
-
-  return (
-    <div>
-      <h2>Suma</h2>
-
-      <input
-        type="number"
-        value={num1}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setNum1(e.target.value)
-        }
-      />
-
-      <input
-        type="number"
-        value={num2}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setNum2(e.target.value)
-        }
-      />
-
-      <button onClick={sum}>Sumar</button>
-
-      <button onClick={() => setView("home")}>
-        Volver
-      </button>
-    </div>
-  );
+  return <SumForm onNavigate={setView} />;
 }
 
 export default Sum;

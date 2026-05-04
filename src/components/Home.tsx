@@ -1,25 +1,12 @@
+import NavigationMenu from "./molecules/NavigationMenu.js";
+import type { View } from "../types/view.js";
+
 type Props = {
-  setView: (view: string) => void;
+  setView: (view: View) => void;
 };
 
 function Home({ setView }: Props) {
-  return (
-    <div>
-      <h1>Menú principal</h1>
-
-      <button onClick={() => setView("sum")}>
-        Ir a Suma
-      </button>
-
-      <button onClick={() => setView("calculator")}>
-        Ir a Calculadora
-      </button>
-
-      <button onClick={() => setView("pokemon")}>
-        Ver Pokémon
-      </button>
-    </div>
-  );
+  return <NavigationMenu onNavigate={setView} />;
 }
 
 export default Home;

@@ -5,12 +5,10 @@ import Home from "./components/Home.js";
 import Sum from "./components/Sum.js";
 import Calculator from "./components/Calculator.js";
 import Pokemon from "./components/Pokemon.js";
+import type { View } from "./types/view.js";
 
 // Side-effect import for styles
 import "./App.css";
-
-// Valid app views
-type View = "home" | "sum" | "calculator" | "pokemon";
 
 function App() {
   const [view, setView] = useState<View>("home");

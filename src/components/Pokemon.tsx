@@ -1,29 +1,15 @@
 import { useEffect, useState } from "react";
 
-type Props = {
-  setView: (view: string) => void;
-};
+import PokemonCard from "./molecules/PokemonCard.js";
+import PokemonDetail from "./molecules/PokemonDetail.js";
+import PokemonModal from "./molecules/PokemonModal.js";
+import { fetchPokemonCatalog } from "../services/pokemonApi.js";
+import type { PokemonType } from "../types/pokemon.js";
+import type { ChangeEvent } from "react";
+import type { View } from "../types/view.js";
 
-// Tipos mínimos necesarios (solo lo que usas)
-type PokemonType = {
-  id: number;
-  name: string;
-  height: number;
-  weight: number;
-  base_experience: number;
-  sprites: {
-    front_default: string;
-  };
-  types: {
-    type: {
-      name: string;
-    };
-  }[];
-  abilities: {
-    ability: {
-      name: string;
-    };
-  }[];
+type Props = {
+  setView: (view: View) => void;
 };
 
 function Pokemon({ setView }: Props) {
@@ -37,17 +23,8 @@ function Pokemon({ setView }: Props) {
   }, []);
 
   const getPokemons = async (): Promise<void> => {
-    const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=8");
-    const data = await response.json();
-
-    const pokemonDetails: PokemonType[] = await Promise.all(
-      data.results.map(async (pokemon: { url: string }) => {
-        const detailResponse = await fetch(pokemon.url);
-        return await detailResponse.json();
-      })
-    );
-
-    setPokemons(pokemonDetails);
+    const pokemonCatalog = await fetchPokemonCatalog();
+    setPokemons(pokemonCatalog);
   };
 
   const filteredPokemons = pokemons.filter((pokemon) =>
@@ -73,37 +50,11 @@ function Pokemon({ setView }: Props) {
 
   if (detailPokemon) {
     return (
-      <div className="pokemon-page">
-        <h1>{detailPokemon.name}</h1>
-
-        <img
-          className="pokemon-detail-image"
-          src={detailPokemon.sprites.front_default}
-          alt={detailPokemon.name}
-        />
-
-        <p>Altura: {detailPokemon.height}</p>
-        <p>Peso: {detailPokemon.weight}</p>
-        <p>Experiencia base: {detailPokemon.base_experience}</p>
-
-        <p>
-          Tipo:{" "}
-          {detailPokemon.types.map((item) => item.type.name).join(", ")}
-        </p>
-
-        <p>
-          Habilidades:{" "}
-          {detailPokemon.abilities.map((item) => item.ability.name).join(", ")}
-        </p>
-
-        <button onClick={backToPokemonList}>
-          Volver a Pokémon
-        </button>
-
-        <button onClick={() => setView("home")}>
-          Ir al Home
-        </button>
-      </div>
+      <PokemonDetail
+        pokemon={detailPokemon}
+        onBackToList={backToPokemonList}
+        onGoHome={() => setView("home")}
+      />
     );
   }
 
@@ -116,26 +67,18 @@ function Pokemon({ setView }: Props) {
         type="text"
         placeholder="Buscar Pokémon..."
         value={search}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+        onChange={(e: ChangeEvent<HTMLInputElement>) =>
           setSearch(e.target.value)
         }
       />
 
       <div className="pokemon-grid">
         {filteredPokemons.map((pokemon) => (
-          <div
-            className="pokemon-card"
+          <PokemonCard
             key={pokemon.id}
-            onClick={() => openModal(pokemon)}
-          >
-            <img
-              src={pokemon.sprites.front_default}
-              alt={pokemon.name}
-            />
-
-            <h2>{pokemon.name}</h2>
-            <p>Experiencia base: {pokemon.base_experience}</p>
-          </div>
+            pokemon={pokemon}
+            onSelect={openModal}
+          />
         ))}
       </div>
 
@@ -144,34 +87,11 @@ function Pokemon({ setView }: Props) {
       </button>
 
       {selectedPokemon && (
-        <div className="modal-background">
-          <div className="modal-content">
-            <button className="modal-close" onClick={closeModal}>
-              X
-            </button>
-
-            <img
-              src={selectedPokemon.sprites.front_default}
-              alt={selectedPokemon.name}
-            />
-
-            <h2>{selectedPokemon.name}</h2>
-
-            <p>Altura: {selectedPokemon.height}</p>
-            <p>Peso: {selectedPokemon.weight}</p>
-
-            <p>
-              Tipo:{" "}
-              {selectedPokemon.types
-                .map((item) => item.type.name)
-                .join(", ")}
-            </p>
-
-            <button onClick={() => openDetailPage(selectedPokemon)}>
-              Ver más
-            </button>
-          </div>
-        </div>
+        <PokemonModal
+          pokemon={selectedPokemon}
+          onClose={closeModal}
+          onSeeDetails={openDetailPage}
+        />
       )}
     </div>
   );
