@@ -1,13 +1,7 @@
-import type { ButtonHTMLAttributes, PropsWithChildren } from "react";
+import MuiButton, { type ButtonProps as MuiButtonProps } from "@mui/material/Button";
 
-type ButtonProps = PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>;
-
-function Button({ children, type = "button", ...props }: ButtonProps) {
-  return (
-    <button type={type} {...props}>
-      {children}
-    </button>
-  );
+function Button(props: MuiButtonProps) {
+  return <MuiButton variant="contained" disableElevation {...props} />;
 }
 
 export default Button;

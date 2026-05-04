@@ -1,5 +1,9 @@
 import { useState } from "react";
 
+import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+
 import Button from "../atoms/Button.js";
 import SectionTitle from "../atoms/SectionTitle.js";
 import TextField from "../atoms/TextField.js";
@@ -19,25 +23,34 @@ function SumForm({ onNavigate }: SumFormProps) {
   };
 
   return (
-    <div>
-      <SectionTitle level={2}>Suma</SectionTitle>
+    <Paper elevation={3} sx={{ p: 4, maxWidth: 420, mx: "auto", my: 6 }}>
+      <Stack spacing={2}>
+        <SectionTitle level={2}>Suma</SectionTitle>
 
-      <TextField
-        type="number"
-        value={num1}
-        onChange={(event) => setNum1(event.target.value)}
-      />
+        <Typography variant="body2" color="text.secondary">
+          Ingresa dos números para ver el resultado.
+        </Typography>
 
-      <TextField
-        type="number"
-        value={num2}
-        onChange={(event) => setNum2(event.target.value)}
-      />
+        <TextField
+          type="number"
+          label="Número 1"
+          value={num1}
+          onChange={(event) => setNum1(event.target.value)}
+        />
 
-      <Button onClick={handleSum}>Sumar</Button>
+        <TextField
+          type="number"
+          label="Número 2"
+          value={num2}
+          onChange={(event) => setNum2(event.target.value)}
+        />
 
-      <Button onClick={() => onNavigate("home")}>Volver</Button>
-    </div>
+        <Button onClick={handleSum}>Sumar</Button>
+        <Button color="inherit" variant="outlined" onClick={() => onNavigate("home")}>
+          Volver
+        </Button>
+      </Stack>
+    </Paper>
   );
 }
 

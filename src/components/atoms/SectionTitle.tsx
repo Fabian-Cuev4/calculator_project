@@ -1,3 +1,4 @@
+import Typography from "@mui/material/Typography";
 import type { PropsWithChildren } from "react";
 
 type SectionTitleProps = PropsWithChildren<{
@@ -5,7 +6,11 @@ type SectionTitleProps = PropsWithChildren<{
 }>;
 
 function SectionTitle({ children, level = 2 }: SectionTitleProps) {
-  return level === 1 ? <h1>{children}</h1> : <h2>{children}</h2>;
+  return (
+    <Typography variant={level === 1 ? "h4" : "h5"} component={level === 1 ? "h1" : "h2"} gutterBottom>
+      {children}
+    </Typography>
+  );
 }
 
 export default SectionTitle;

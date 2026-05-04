@@ -1,3 +1,7 @@
+import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+
 import Button from "../atoms/Button.js";
 import type { PokemonType } from "../../types/pokemon.js";
 
@@ -9,29 +13,32 @@ type PokemonDetailProps = {
 
 function PokemonDetail({ pokemon, onBackToList, onGoHome }: PokemonDetailProps) {
   return (
-    <div className="pokemon-page">
-      <h1>{pokemon.name}</h1>
+    <Paper elevation={3} sx={{ p: 4, maxWidth: 640, mx: "auto", my: 6 }}>
+      <Stack spacing={2} alignItems="center">
+        <Typography variant="h4" component="h1" sx={{ textTransform: "capitalize" }}>
+          {pokemon.name}
+        </Typography>
 
-      <img
-        className="pokemon-detail-image"
-        src={pokemon.sprites.front_default}
-        alt={pokemon.name}
-      />
+        <img src={pokemon.sprites.front_default} alt={pokemon.name} width={180} />
 
-      <p>Altura: {pokemon.height}</p>
-      <p>Peso: {pokemon.weight}</p>
-      <p>Experiencia base: {pokemon.base_experience}</p>
+        <Typography>Altura: {pokemon.height}</Typography>
+        <Typography>Peso: {pokemon.weight}</Typography>
+        <Typography>Experiencia base: {pokemon.base_experience}</Typography>
+        <Typography>
+          Tipo: {pokemon.types.map((item) => item.type.name).join(", ")}
+        </Typography>
+        <Typography>
+          Habilidades: {pokemon.abilities.map((item) => item.ability.name).join(", ")}
+        </Typography>
 
-      <p>Tipo: {pokemon.types.map((item) => item.type.name).join(", ")}</p>
-
-      <p>
-        Habilidades: {pokemon.abilities.map((item) => item.ability.name).join(", ")}
-      </p>
-
-      <Button onClick={onBackToList}>Volver a Pokémon</Button>
-
-      <Button onClick={onGoHome}>Ir al Home</Button>
-    </div>
+        <Stack direction="row" spacing={2}>
+          <Button color="inherit" variant="outlined" onClick={onBackToList}>
+            Volver a Pokémon
+          </Button>
+          <Button onClick={onGoHome}>Ir al Home</Button>
+        </Stack>
+      </Stack>
+    </Paper>
   );
 }
 

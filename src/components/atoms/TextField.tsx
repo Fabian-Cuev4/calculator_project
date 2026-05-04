@@ -1,7 +1,7 @@
-import type { InputHTMLAttributes } from "react";
+import MuiTextField, { type TextFieldProps as MuiTextFieldProps } from "@mui/material/TextField";
 
-function TextField(props: InputHTMLAttributes<HTMLInputElement>) {
-  return <input {...props} />;
+function TextField(props: MuiTextFieldProps) {
+  return <MuiTextField {...props} variant="outlined" size="small" fullWidth />;
 }
 
 export default TextField;

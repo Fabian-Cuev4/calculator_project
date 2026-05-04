@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 
+import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
+
 import PokemonCard from "./molecules/PokemonCard.js";
 import PokemonDetail from "./molecules/PokemonDetail.js";
 import PokemonModal from "./molecules/PokemonModal.js";
 import { fetchPokemonCatalog } from "../services/pokemonApi.js";
 import type { PokemonType } from "../types/pokemon.js";
-import type { ChangeEvent } from "react";
+import Button from "./atoms/Button.js";
+import TextField from "./atoms/TextField.js";
 import type { View } from "../types/view.js";
 
 type Props = {
@@ -59,32 +63,32 @@ function Pokemon({ setView }: Props) {
   }
 
   return (
-    <div className="pokemon-page">
-      <h1>Pokémon API</h1>
+    <Paper elevation={3} sx={{ p: 4, mx: "auto", my: 6, width: "100%", maxWidth: 1120 }}>
+      <Stack spacing={3}>
+        <h1>Pokémon API</h1>
 
-      <input
-        className="pokemon-search"
-        type="text"
-        placeholder="Buscar Pokémon..."
-        value={search}
-        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-          setSearch(e.target.value)
-        }
-      />
+        <TextField
+          type="text"
+          label="Buscar Pokémon"
+          placeholder="Buscar Pokémon..."
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+        />
 
-      <div className="pokemon-grid">
-        {filteredPokemons.map((pokemon) => (
-          <PokemonCard
-            key={pokemon.id}
-            pokemon={pokemon}
-            onSelect={openModal}
-          />
-        ))}
-      </div>
+        <div className="pokemon-grid">
+          {filteredPokemons.map((pokemon) => (
+            <PokemonCard
+              key={pokemon.id}
+              pokemon={pokemon}
+              onSelect={openModal}
+            />
+          ))}
+        </div>
 
-      <button onClick={() => setView("home")}>
-        Volver al Home
-      </button>
+        <Button color="inherit" variant="outlined" onClick={() => setView("home")}>
+          Volver al Home
+        </Button>
+      </Stack>
 
       {selectedPokemon && (
         <PokemonModal
@@ -93,7 +97,7 @@ function Pokemon({ setView }: Props) {
           onSeeDetails={openDetailPage}
         />
       )}
-    </div>
+    </Paper>
   );
 }
 

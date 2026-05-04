@@ -1,5 +1,7 @@
 import type { CSSProperties } from "react";
 
+import Box from "@mui/material/Box";
+
 import Button from "../atoms/Button.js";
 import type { CalculatorOperation } from "../../utils/calculator.js";
 
@@ -24,7 +26,7 @@ function CalculatorKeypad({
   onEquals,
 }: CalculatorKeypadProps) {
   return (
-    <div style={keypadGridStyle}>
+    <Box sx={keypadGridStyle}>
       {[7, 8, 9].map((value) => (
         <Button key={value} onClick={() => onNumberPress(value.toString())}>
           {value}
@@ -47,10 +49,10 @@ function CalculatorKeypad({
       <Button onClick={() => onOperationPress("-")}>-</Button>
 
       <Button onClick={() => onNumberPress("0")}>0</Button>
-      <Button onClick={onClear}>C</Button>
+      <Button color="inherit" variant="outlined" onClick={onClear}>C</Button>
       <Button onClick={onEquals}>=</Button>
       <Button onClick={() => onOperationPress("+")}>+</Button>
-    </div>
+    </Box>
   );
 }
 

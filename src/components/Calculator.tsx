@@ -1,5 +1,10 @@
 import { useState } from "react";
 
+import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+
+import Button from "./atoms/Button.js";
 import CalculatorKeypad from "./molecules/CalculatorKeypad.js";
 import type { View } from "../types/view.js";
 import { applyCalculatorOperation } from "../utils/calculator.js";
@@ -45,11 +50,19 @@ function Calculator({ setView }: Props) {
   };
 
   return (
-    <div className="container">
-      <div className="calculator">
-        <h2>Calculadora</h2>
+    <Paper elevation={3} sx={{ p: 4, maxWidth: 420, mx: "auto", my: 6 }}>
+      <Stack spacing={2} alignItems="center">
+        <Typography variant="h5" component="h2">
+          Calculadora
+        </Typography>
 
-        <input value={display} readOnly />
+        <Typography
+          variant="h4"
+          component="div"
+          sx={{ width: "100%", p: 1.5, textAlign: "right", border: 1, borderColor: "divider", borderRadius: 1 }}
+        >
+          {display || "0"}
+        </Typography>
 
         <CalculatorKeypad
           onNumberPress={agregarNumero}
@@ -58,9 +71,11 @@ function Calculator({ setView }: Props) {
           onEquals={calcular}
         />
 
-        <button onClick={() => setView("home")}>Volver</button>
-      </div>
-    </div>
+        <Button color="inherit" variant="outlined" onClick={() => setView("home")}>
+          Volver
+        </Button>
+      </Stack>
+    </Paper>
   );
 }
 
